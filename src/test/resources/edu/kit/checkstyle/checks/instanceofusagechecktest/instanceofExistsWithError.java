@@ -37,4 +37,10 @@ public class instanceofExistsWithError {
   public void equals(Object i) {
     if (i instanceof String) {}
   }
+  
+  // instanceof outside of method
+  static Object o;
+  static {
+    if (o instanceof String) {}
+  }
 }

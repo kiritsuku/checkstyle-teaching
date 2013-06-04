@@ -29,10 +29,18 @@ public class InstanceofUsageCheck extends Check {
     final int column = ast.getColumnNo();
 
     DetailAST methodDef = ast.getParent();
-    while (methodDef.getType() != TokenTypes.METHOD_DEF) {
+    while (methodDef != null && methodDef.getType() != TokenTypes.METHOD_DEF) {
       methodDef = methodDef.getParent();
     }
 
+    final boolean isEqualsMethod = methodDef == null ? false : isEqualsMethod(methodDef);
+
+    if (!isEqualsMethod) {
+      log(line, column, "instanceof may only be used in the equals method");
+    }
+  }
+
+  private boolean isEqualsMethod(final DetailAST methodDef) {
     final DetailAST methodName = methodDef.findFirstToken(TokenTypes.IDENT);
     final DetailAST methodType = methodDef.findFirstToken(TokenTypes.TYPE);
     final DetailAST params = methodDef.findFirstToken(TokenTypes.PARAMETERS);
@@ -40,16 +48,12 @@ public class InstanceofUsageCheck extends Check {
 
     final Set<String> mods = modifierNames(methodDef);
 
-    final boolean isEqualsMethod =
+    return
         mods.contains("public") && !mods.contains("static") &&
         eqName(methodName, "equals") &&
         eqTypeASTName(methodType, "boolean") &&
         eqTypeASTName(paramType, "Object") &&
         eqParamCount(params, 1);
-
-    if (!isEqualsMethod) {
-      log(line, column, "instanceof may only be used in the equals method");
-    }
   }
 
   private Set<String> modifierNames(final DetailAST ast) {

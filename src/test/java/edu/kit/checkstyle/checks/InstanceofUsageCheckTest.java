@@ -26,7 +26,10 @@ public class InstanceofUsageCheckTest extends BaseCheckTestSupport {
   @Test
   public void instanceofExistsWithError() throws Exception {
     checkTest(config, fileWithSuffix("instanceofExistsWithError"),
-        Arrays.asList(errAt(8, 11), errAt(14, 11), errAt(20, 13), errAt(26, 11), errAt(32, 11), errAt(38, 11)));
+        Arrays.asList(
+            errAt(8, 11), errAt(14, 11), errAt(20, 13),
+            errAt(26, 11), errAt(32, 11), errAt(38, 11),
+            errAt(44, 11)));
   }
 
   @Test
