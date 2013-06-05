@@ -14,7 +14,7 @@ public class InstanceofUsageCheckTest extends BaseCheckTestSupport {
   final DefaultConfiguration config = createCheckConfig(InstanceofUsageCheck.class);
 
   @Test
-  public void noInstanceofExists() throws Exception { // comment
+  public void noInstanceofExists() throws Exception {
     verify(config, fileNameWithSuffix("noInstanceofExists"), ArrayUtils.EMPTY_STRING_ARRAY);
   }
 

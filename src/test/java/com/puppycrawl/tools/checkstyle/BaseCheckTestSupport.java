@@ -144,7 +144,7 @@ public abstract class BaseCheckTestSupport {
         final Err err = errors.get(i);
         final String regex = ".*:" + err.row + ":" + err.column + ":.*";
 
-        if (!msg.matches(regex)) {
+        if (msg == null || !msg.matches(regex)) {
           throw new ComparisonFailure("Error message didn't match the expected regex,", regex, msg);
         }
       }

@@ -1,11 +1,11 @@
 package edu.kit.checkstyle.checks;
 
-import java.util.HashSet;
 import java.util.Set;
 
-import com.puppycrawl.tools.checkstyle.api.Check;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+
+import edu.kit.checkstyle.TokenSearcherCheck;
 
 
 /**
@@ -14,7 +14,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
  *
  * @since JDK1.7, Jun 3, 2013
  */
-public class InstanceofUsageCheck extends Check {
+public class InstanceofUsageCheck extends TokenSearcherCheck {
 
   @Override
   public int[] getDefaultTokens() {
@@ -56,17 +56,6 @@ public class InstanceofUsageCheck extends Check {
         eqParamCount(params, 1);
   }
 
-  private Set<String> modifierNames(final DetailAST ast) {
-    final DetailAST modAst = ast.findFirstToken(TokenTypes.MODIFIERS);
-    require(modAst != null, "AST doesn't contain modifiers");
-
-    final Set<String> mods = new HashSet<>();
-    for (DetailAST mod = modAst.getFirstChild(); mod != null; mod = mod.getNextSibling()) {
-      mods.add(mod.getText());
-    }
-    return mods;
-  }
-
   private boolean eqParamCount(final DetailAST ast, final int count) {
     require(ast.getType() == TokenTypes.PARAMETERS, "not a parameter list");
     return ast.getChildCount() == count;
@@ -79,11 +68,5 @@ public class InstanceofUsageCheck extends Check {
   private boolean eqTypeASTName(final DetailAST ast, final String name) {
     require(ast.getType() == TokenTypes.TYPE, "not a type");
     return ast.getFirstChild().getText().equals(name);
-  }
-
-  private void require(final boolean requirement, final String message) {
-    if (!requirement) {
-      throw new AssertionError(message);
-    }
   }
 }
