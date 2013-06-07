@@ -28,11 +28,7 @@ public class InstanceofUsageCheck extends TokenSearcherCheck {
     final int line = ast.getLineNo();
     final int column = ast.getColumnNo();
 
-    DetailAST methodDef = ast.getParent();
-    while (methodDef != null && methodDef.getType() != TokenTypes.METHOD_DEF) {
-      methodDef = methodDef.getParent();
-    }
-
+    final DetailAST methodDef = getContainingMethod(ast);
     final boolean isEqualsMethod = methodDef == null ? false : isEqualsMethod(methodDef);
 
     if (!isEqualsMethod) {
@@ -59,10 +55,6 @@ public class InstanceofUsageCheck extends TokenSearcherCheck {
   private boolean eqParamCount(final DetailAST ast, final int count) {
     require(ast.getType() == TokenTypes.PARAMETERS, "not a parameter list");
     return ast.getChildCount() == count;
-  }
-
-  private boolean eqName(final DetailAST ast, final String name) {
-    return ast.getText().equals(name);
   }
 
   private boolean eqTypeASTName(final DetailAST ast, final String name) {

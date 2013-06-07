@@ -11,8 +11,7 @@ import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 
 public class PrintlnUsageCheckTest extends BaseCheckTestSupport {
 
-  DefaultConfiguration config = createCheckConfig(PrintlnUsageCheck.class);
-
+  private final DefaultConfiguration config = createCheckConfig(PrintlnUsageCheck.class);
 
   @Test
   public void noPrintlnExists() throws Exception {

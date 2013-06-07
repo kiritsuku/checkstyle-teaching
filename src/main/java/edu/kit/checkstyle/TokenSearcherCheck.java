@@ -31,4 +31,27 @@ public abstract class TokenSearcherCheck extends Check {
     return ast.findFirstToken(TokenTypes.MODIFIERS) != null;
   }
 
+  protected boolean eqName(final DetailAST ast, final String name) {
+    return ast.getText().equals(name);
+  }
+
+  /**
+   * Searches for the method a token is placed into.
+   *
+   * @param ast
+   *        The AST to start the search
+   * @return The containing method or {@code null} if none exists.
+   */
+  protected DetailAST getContainingMethod(final DetailAST ast) {
+    if (ast.getType() == TokenTypes.METHOD_DEF) {
+      return ast;
+    }
+
+    DetailAST methodDef = ast.getParent();
+    while (methodDef != null && methodDef.getType() != TokenTypes.METHOD_DEF) {
+      methodDef = methodDef.getParent();
+    }
+    return methodDef;
+  }
+
 }
