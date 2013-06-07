@@ -133,20 +133,27 @@ public abstract class BaseCheckTestSupport {
       final Checker c = createChecker(config);
       c.process(Arrays.asList(path));
 
-      // process each of the lines
-      final ByteArrayInputStream bais = new ByteArrayInputStream(
-          mBAOS.toByteArray());
-      final LineNumberReader lnr = new LineNumberReader(new InputStreamReader(
-          bais));
+      try (
+          LineNumberReader lnr = new LineNumberReader(
+              new InputStreamReader(
+                  new ByteArrayInputStream(
+                      mBAOS.toByteArray())))) {
 
-      for (int i = 0, size = errors.size(); i < size; ++i) {
-        final String msg = lnr.readLine();
-        final Err err = errors.get(i);
-        final String regex = ".*:" + err.row + ":" + err.column + ":.*";
+        for (int i = 0, size = errors.size(); i < size; ++i) {
+          final String msg = lnr.readLine();
+          final Err err = errors.get(i);
+          final String regex = ".*:" + err.row + ":" + err.column + ":.*";
 
-        if (msg == null || !msg.matches(regex)) {
-          throw new ComparisonFailure("Error message didn't match the expected regex,", regex, msg);
+          if (msg == null || !msg.matches(regex)) {
+            throw new ComparisonFailure("Error message didn't match the expected regex,", regex, msg);
+          }
         }
+
+        final String msg = lnr.readLine();
+        if (msg != null) {
+          throw new AssertionError("Error message retrieved but nothing expected. Message: " + msg);
+        }
+
       }
 
       c.destroy();

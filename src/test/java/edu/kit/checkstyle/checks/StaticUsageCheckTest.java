@@ -26,11 +26,21 @@ public class StaticUsageCheckTest extends BaseCheckTestSupport {
   @Test
   public void staticFound() throws Exception {
     checkTest(config, fileWithSuffix("staticFound"),
-        Arrays.asList(errAt(7, 3), errAt(10, 3)));
+        Arrays.asList(errAt(7, 3)));
   }
 
   @Test
   public void staticImportIsNoError() throws Exception {
     verify(config, fileNameWithSuffix("staticImportIsNoError"), ArrayUtils.EMPTY_STRING_ARRAY);
+  }
+
+  @Test
+  public void singletonIsNoError() throws Exception {
+    verify(config, fileNameWithSuffix("singletonIsNoError"), ArrayUtils.EMPTY_STRING_ARRAY);
+  }
+
+  @Test
+  public void helperFunctionIsNoError() throws Exception {
+    verify(config, fileNameWithSuffix("helperFunctionIsNoError"), ArrayUtils.EMPTY_STRING_ARRAY);
   }
 }

@@ -6,6 +6,6 @@ public class staticFound {
   // error here
   static int i = 0;
   
-  // error here
+  // no error here
   static void meth() {} 
 }

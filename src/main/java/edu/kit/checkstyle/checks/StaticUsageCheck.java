@@ -9,13 +9,11 @@ import edu.kit.checkstyle.TokenSearcherCheck;
 
 
 /**
- * Checks the existence of 'static' keywords in a file.
+ * Checks the existence of 'static' keywords at variables. For variables
+ * 'static' is only allowed together with the 'final' keyword, because this
+ * marks it as a constant.
  *
- * They are only allowed together with a 'final' keyword.
- *
- * TODO:
- * - check singletons?
- * - check helper functions?
+ * For methods no errors are reported if they are marked as 'static'.
  *
  * @since JDK1.7, Jun 4, 2013
  */
@@ -26,7 +24,7 @@ public class StaticUsageCheck extends TokenSearcherCheck {
   @Override
   public int[] getDefaultTokens() {
     return new int[] {
-      TokenTypes.LITERAL_STATIC
+        TokenTypes.LITERAL_STATIC
     };
   }
 
@@ -41,36 +39,11 @@ public class StaticUsageCheck extends TokenSearcherCheck {
 
     final DetailAST block = ast.getParent().getParent();
 
-    if (hasModifiers(block)) {
+    if (block.getType() == TokenTypes.VARIABLE_DEF) {
       final Set<String> mods = modifierNames(block);
       if (!mods.contains("final")) {
         log(line, column, msg);
       }
-    } else {
-      log(line, column, msg);
     }
   }
 }
-
-/*
-// singleton
-class X {
-  private static final X x = new X();
-  private X() {}
-
-  static X getInstance() {
-    return x;
-  }
-}
-
-// helper function
-class IntHolder {
-  final int value;
-  private IntHolder(final int value) {
-    this.value = value;
-  }
-  static IntHolder of(final int value) {
-    return new IntHolder(value);
-  }
-}
-*/
