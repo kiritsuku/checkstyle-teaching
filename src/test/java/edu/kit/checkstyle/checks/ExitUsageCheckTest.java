@@ -2,7 +2,6 @@ package edu.kit.checkstyle.checks;
 
 import java.util.Arrays;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.BaseCheckTestSupport;
@@ -15,12 +14,11 @@ public class ExitUsageCheckTest extends BaseCheckTestSupport {
 
   @Test
   public void noErrorInMainMethod() throws Exception {
-    verify(config, fileNameWithSuffix("noErrorInMainMethod"), ArrayUtils.EMPTY_STRING_ARRAY);
+    test(config, "noErrorInMainMethod", NO_ERR);
   }
 
   @Test
   public void errorOutsideOfMainMethod() throws Exception {
-    checkTest(config, fileWithSuffix("errorOutsideOfMainMethod"),
-        Arrays.asList(errAt(7, 12)));
+    test(config, "errorOutsideOfMainMethod", Arrays.asList(errAt(7, 12)));
   }
 }

@@ -2,7 +2,6 @@ package edu.kit.checkstyle.checks;
 
 import java.util.Arrays;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.BaseCheckTestSupport;
@@ -15,12 +14,11 @@ public class PrintlnUsageCheckTest extends BaseCheckTestSupport {
 
   @Test
   public void noPrintlnExists() throws Exception {
-    verify(config, fileNameWithSuffix("noPrintlnExists"), ArrayUtils.EMPTY_STRING_ARRAY);
+    test(config, "noPrintlnExists", NO_ERR);
   }
 
   @Test
   public void printlnFound() throws Exception {
-    checkTest(config, fileWithSuffix("printlnFound"),
-        Arrays.asList(errAt(7, 16)));
+    test(config, "printlnFound", Arrays.asList(errAt(7, 16)));
   }
 }

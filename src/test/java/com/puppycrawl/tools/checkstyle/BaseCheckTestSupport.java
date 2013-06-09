@@ -3,16 +3,13 @@ package com.puppycrawl.tools.checkstyle;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.ComparisonFailure;
@@ -21,8 +18,6 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
-
-import static org.junit.Assert.*;
 
 
 /**
@@ -52,6 +47,8 @@ public abstract class BaseCheckTestSupport {
     }
   }
 
+  protected static final List<Err> NO_ERR = Lists.newArrayList();
+
   protected Err errAt(final int row, final int column) {
     return new Err(row, column);
   }
@@ -78,9 +75,8 @@ public abstract class BaseCheckTestSupport {
     }
   }
 
-  protected final ByteArrayOutputStream mBAOS = new ByteArrayOutputStream();
-  protected final PrintStream mStream = new PrintStream(mBAOS);
-  protected final Properties mProps = new Properties();
+  private final ByteArrayOutputStream mBAOS = new ByteArrayOutputStream();
+  private final PrintStream mStream = new PrintStream(mBAOS);
 
   public static DefaultConfiguration createCheckConfig(final Class<?> aClazz) {
     final DefaultConfiguration checkConfig = new DefaultConfiguration(
@@ -120,15 +116,19 @@ public abstract class BaseCheckTestSupport {
     final String[] dirs = getClass().getName().split("\\.");
     dirs[dirs.length - 1] = dirs[dirs.length - 1].toLowerCase();
 
-    return new File(System.getProperty("testinputs.dir"), testDir
-        + StringUtils.join(dirs, '/') + fileName);
+    return new File(System.getProperty("testinputs.dir"),
+        testDir + StringUtils.join(dirs, '/') + fileName);
   }
 
   protected String fileNameWithSuffix(final String suffix) {
     return fileWithSuffix(suffix).getAbsolutePath();
   }
 
-  protected void checkTest(final DefaultConfiguration config, final File path, final List<Err> errors) {
+  protected void test(final DefaultConfiguration config, final String fileNameSuffix, final List<Err> errors) {
+    testFile(config, fileWithSuffix(fileNameSuffix), errors);
+  }
+
+  protected void testFile(final DefaultConfiguration config, final File path, final List<Err> errors) {
     try {
       final Checker c = createChecker(config);
       c.process(Arrays.asList(path));
@@ -160,55 +160,5 @@ public abstract class BaseCheckTestSupport {
     } catch (final Exception e) {
       e.printStackTrace();
     }
-  }
-
-  protected String getPath(final String aFilename) throws IOException {
-    final File f = new File(System.getProperty("testinputs.dir"), aFilename);
-    return f.getCanonicalPath();
-  }
-
-  protected String getSrcPath(final String aFilename) throws IOException {
-    final File f = new File(System.getProperty("testsrcs.dir"), aFilename);
-    return f.getCanonicalPath();
-  }
-
-  protected void verify(final Configuration aConfig, final String aFileName,
-      final String[] aExpected) throws Exception {
-    verify(createChecker(aConfig), aFileName, aFileName, aExpected);
-  }
-
-  protected void verify(final Checker aC, final String aFileName,
-      final String[] aExpected) throws Exception {
-    verify(aC, aFileName, aFileName, aExpected);
-  }
-
-  protected void verify(final Checker aC, final String aProcessedFilename,
-      final String aMessageFileName, final String[] aExpected) throws Exception {
-    verify(aC, new File[] {
-      new File(aProcessedFilename)
-    }, aMessageFileName, aExpected);
-  }
-
-  protected void verify(final Checker aC, final File[] aProcessedFiles,
-      final String aMessageFileName, final String[] aExpected) throws Exception {
-    mStream.flush();
-    final List<File> theFiles = Lists.newArrayList();
-    Collections.addAll(theFiles, aProcessedFiles);
-    final int errs = aC.process(theFiles);
-
-    // process each of the lines
-    final ByteArrayInputStream bais = new ByteArrayInputStream(
-        mBAOS.toByteArray());
-    final LineNumberReader lnr = new LineNumberReader(new InputStreamReader(
-        bais));
-
-    for (int i = 0; i < aExpected.length; i++) {
-      final String expected = aMessageFileName + ":" + aExpected[i];
-      final String actual = lnr.readLine();
-      assertEquals("error message " + i, expected, actual);
-    }
-
-    assertEquals("unexpected output: " + lnr.readLine(), aExpected.length, errs);
-    aC.destroy();
   }
 }

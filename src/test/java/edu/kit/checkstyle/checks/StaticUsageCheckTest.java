@@ -2,7 +2,6 @@ package edu.kit.checkstyle.checks;
 
 import java.util.Arrays;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.BaseCheckTestSupport;
@@ -15,32 +14,31 @@ public class StaticUsageCheckTest extends BaseCheckTestSupport {
 
   @Test
   public void noStaticExists() throws Exception {
-    verify(config, fileNameWithSuffix("noStaticExists"), ArrayUtils.EMPTY_STRING_ARRAY);
+    test(config, "noStaticExists", NO_ERR);
   }
 
   @Test
   public void publicStaticFinalValue() throws Exception {
-    verify(config, fileNameWithSuffix("publicStaticFinalValue"), ArrayUtils.EMPTY_STRING_ARRAY);
+    test(config, "publicStaticFinalValue", NO_ERR);
   }
 
   @Test
   public void staticFound() throws Exception {
-    checkTest(config, fileWithSuffix("staticFound"),
-        Arrays.asList(errAt(7, 3)));
+    test(config, "staticFound", Arrays.asList(errAt(7, 3)));
   }
 
   @Test
   public void staticImportIsNoError() throws Exception {
-    verify(config, fileNameWithSuffix("staticImportIsNoError"), ArrayUtils.EMPTY_STRING_ARRAY);
+    test(config, "staticImportIsNoError", NO_ERR);
   }
 
   @Test
   public void singletonIsNoError() throws Exception {
-    verify(config, fileNameWithSuffix("singletonIsNoError"), ArrayUtils.EMPTY_STRING_ARRAY);
+    test(config, "singletonIsNoError", NO_ERR);
   }
 
   @Test
   public void helperFunctionIsNoError() throws Exception {
-    verify(config, fileNameWithSuffix("helperFunctionIsNoError"), ArrayUtils.EMPTY_STRING_ARRAY);
+    test(config, "helperFunctionIsNoError", NO_ERR);
   }
 }
