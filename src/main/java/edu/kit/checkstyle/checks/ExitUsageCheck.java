@@ -27,18 +27,20 @@ public class ExitUsageCheck extends TokenSearcherCheck {
     final int line = ast.getLineNo();
     final int column = ast.getColumnNo();
 
-    final boolean isInMainMethod =
+    final boolean isExitToken =
         eqName(ast, "exit") &&
-        eqName(ast.getPreviousSibling(), "System") &&
-        eqName(getContainingMethodName(ast), "main");
+        eqName(ast.getPreviousSibling(), "System");
 
-    if (!isInMainMethod) {
+    if (isExitToken && !isInMainMethod(ast)) {
       log(line, column, msg);
     }
   }
 
+  private boolean isInMainMethod(final DetailAST ast) {
+    return eqName(getContainingMethodName(ast), "main");
+  }
+
   private DetailAST getContainingMethodName(final DetailAST ast) {
-    require(ast.getType() == TokenTypes.METHOD_DEF, "AST is not a method definition");
     return getContainingMethod(ast).findFirstToken(TokenTypes.IDENT);
   }
 }
