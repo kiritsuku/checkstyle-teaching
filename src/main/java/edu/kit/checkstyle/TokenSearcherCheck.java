@@ -30,4 +30,5 @@ public abstract class TokenSearcherCheck extends Check {
   protected boolean hasModifiers(final DetailAST ast) {
     return ast.findFirstToken(TokenTypes.MODIFIERS) != null;
   }
+
 }

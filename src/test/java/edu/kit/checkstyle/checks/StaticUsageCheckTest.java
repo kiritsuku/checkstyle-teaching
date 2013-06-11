@@ -28,4 +28,9 @@ public class StaticUsageCheckTest extends BaseCheckTestSupport {
     checkTest(config, fileWithSuffix("staticFound"),
         Arrays.asList(errAt(7, 3), errAt(10, 3)));
   }
+
+  @Test
+  public void staticImportIsNoError() throws Exception {
+    verify(config, fileNameWithSuffix("staticImportIsNoError"), ArrayUtils.EMPTY_STRING_ARRAY);
+  }
 }

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
@@ -20,73 +19,72 @@ import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 public class VerboseListener extends AutomaticBean implements AuditListener {
 
-  private PrintWriter mWriter = new PrintWriter(System.out);
-  private boolean mCloseOut = false;
-  private int mTotalErrors;
-  private int mErrors;
+  private PrintWriter writer = new PrintWriter(System.out);
+  private boolean closeOut = false;
+  private int totalErrors;
+  private int fileErrors;
 
-  public void auditStarted(final AuditEvent aEvt) {
-    mTotalErrors = 0;
-    mWriter.println("Audit started.\n");
+  public void auditStarted(final AuditEvent e) {
+    totalErrors = 0;
+    writer.println("Audit started.\n");
   }
 
-  public void fileStarted(final AuditEvent aEvt) {
-    mErrors = 0;
-    mWriter.println("Started checking file '" + aEvt.getFileName() + "'.");
+  public void fileStarted(final AuditEvent e) {
+    fileErrors = 0;
+    writer.println("Started checking file '" + e.getFileName() + "'.");
   }
 
-  public void auditFinished(final AuditEvent aEvt) {
-    mWriter.println("Audit finished. Total errors: " + mTotalErrors);
-    mWriter.flush();
-    if (mCloseOut) {
-      mWriter.close();
+  public void auditFinished(final AuditEvent e) {
+    writer.println("Audit finished. Total errors: " + totalErrors);
+    writer.flush();
+    if (closeOut) {
+      writer.close();
     }
   }
 
-  public void fileFinished(final AuditEvent aEvt) {
-    mWriter.println("Finished checking file '" + aEvt.getFileName()
-        + "'. Errors: " + mErrors);
-    mWriter.println();
+  public void fileFinished(final AuditEvent e) {
+    writer.println("Finished checking file '" + e.getFileName() + "'. Errors: " + fileErrors);
+    writer.println();
   }
 
-  public void addError(final AuditEvent aEvt) {
-    printEvent(aEvt);
-    if (SeverityLevel.ERROR.equals(aEvt.getSeverityLevel())) {
-      mErrors++;
-      mTotalErrors++;
+  public void addError(final AuditEvent e) {
+    printEvent(e);
+    if (SeverityLevel.ERROR.equals(e.getSeverityLevel())) {
+      fileErrors++;
+      totalErrors++;
     }
   }
 
-  public void setFile(final String aFileName) throws FileNotFoundException {
-    final OutputStream out = new FileOutputStream(aFileName);
-    mWriter = new PrintWriter(out);
-    mCloseOut = true;
+  public void setFile(final String fileName) throws FileNotFoundException {
+    writer = new PrintWriter(new FileOutputStream(fileName));
+    closeOut = true;
   }
 
-  public void addException(final AuditEvent aEvt, final Throwable aThrowable) {
-    printEvent(aEvt);
+  public void addException(final AuditEvent e, final Throwable aThrowable) {
+    printEvent(e);
     aThrowable.printStackTrace(System.out);
-    mErrors++;
-    mTotalErrors++;
+    fileErrors++;
+    totalErrors++;
   }
 
-  private void printEvent(final AuditEvent aEvt)
+  private void printEvent(final AuditEvent e)
   {
-    String msg = errorMsg(aEvt);
-    mWriter.println(msg);
+    final String msg = errorMsg(e);
+    writer.println(msg);
   }
 
-  private String errorMsg(AuditEvent e) {
+  private String errorMsg(final AuditEvent e) {
     try {
-      String[] fileParts = e.getFileName().split("/");
-      int line = e.getLine();
-      String source = FileUtils.readLines(new File(e.getFileName())).get(line - 1);
-      String indent = StringUtils.leftPad("", e.getColumn() - 1);
-      List<String> parts = Arrays.asList(fileParts[fileParts.length - 1], ":",
+      final String[] fileParts = e.getFileName().split("/");
+      final int line = e.getLine();
+      final String source = FileUtils.readLines(new File(e.getFileName())).get(line - 1);
+      final String indent = StringUtils.leftPad("", e.getColumn() - 1);
+      final List<String> parts = Arrays.asList(
+          fileParts[fileParts.length - 1], ":",
           Integer.toString(line), ": ", e.getSeverityLevel().toString(),
           ": ", e.getMessage(), ";\n\t", source, "\n\t", indent, "^");
       return StringUtils.join(parts.iterator(), "");
-    } catch (IOException ex) {
+    } catch (final IOException ex) {
       ex.printStackTrace();
     }
     return "";

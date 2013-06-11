@@ -7,13 +7,14 @@
 <module name="Checker">
   <module name="TreeWalker">
     <module name="InstanceofUsage"/>
+    <module name="StaticUsage"/>
     <module name="MemberName">
       <property name="format" value="^m[a-zA-Z0-9]*$"/>
       <message key="name.invalidPattern" value="Member ''{0}'' must start with a lowercase ''m'' (checked pattern ''{1}'')."/>
     </module>
   </module>
   <module name="VerboseListener">
-    <property name="file" value="audit.txt"/>
+    <property name="file" value="target/audit.txt"/>
   </module>
 </module>
       

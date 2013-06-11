@@ -8,6 +8,17 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import edu.kit.checkstyle.TokenSearcherCheck;
 
 
+/**
+ * Checks the existence of 'static' keywords in a file.
+ *
+ * They are only allowed together with a 'final' keyword.
+ *
+ * TODO:
+ * - check singletons?
+ * - check helper functions?
+ *
+ * @since JDK1.7, Jun 4, 2013
+ */
 public class StaticUsageCheck extends TokenSearcherCheck {
 
   private static final String msg = "'static' may only be used on variables together with 'final'";
@@ -24,6 +35,10 @@ public class StaticUsageCheck extends TokenSearcherCheck {
     final int line = ast.getLineNo();
     final int column = ast.getColumnNo();
 
+    if (ast.getParent().getType() == TokenTypes.STATIC_IMPORT) {
+      return;
+    }
+
     final DetailAST block = ast.getParent().getParent();
 
     if (hasModifiers(block)) {
@@ -36,3 +51,26 @@ public class StaticUsageCheck extends TokenSearcherCheck {
     }
   }
 }
+
+/*
+// singleton
+class X {
+  private static final X x = new X();
+  private X() {}
+
+  static X getInstance() {
+    return x;
+  }
+}
+
+// helper function
+class IntHolder {
+  final int value;
+  private IntHolder(final int value) {
+    this.value = value;
+  }
+  static IntHolder of(final int value) {
+    return new IntHolder(value);
+  }
+}
+*/
