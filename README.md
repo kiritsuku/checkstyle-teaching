@@ -7,6 +7,8 @@ to support students in learning Java.
 
 - `mvn install`: Deploys the JAR locally
 
+- `mvn eclipse:eclipse`: Generates an Eclipse project
+
 - To enable the Checkstyle extensions of this repository in a Maven project, add the following to the `pom.xml`:
 
   ```
@@ -32,7 +34,7 @@ to support students in learning Java.
      </plugins>
    </build>
   ```
-  After that the checkstyle plugin can be executed with `mvn checkstyle:check`. Remember to deploy the extensions before doing a Checkstyle check `mvn install`.
+  After that the checkstyle plugin can be executed with `mvn checkstyle:check`. Remember to deploy the extensions with `mvn install` before doing a Checkstyle check.
 
 - To enable the Checkstyle extensions of this repository on the command line, use the following command:
 
