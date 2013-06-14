@@ -1,8 +1,11 @@
 package edu.kit.checkstyle;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.puppycrawl.tools.checkstyle.api.Check;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -14,6 +17,16 @@ public abstract class TokenSearcherCheck extends Check {
     if (!requirement) {
       throw new AssertionError(message);
     }
+  }
+
+  @SafeVarargs
+  protected final <A> Set<A> mkSet(final A... as) {
+    return Sets.newHashSet(as);
+  }
+
+  @SafeVarargs
+  protected final <A> List<A> mkList(final A... as) {
+    return Lists.newArrayList(as);
   }
 
   protected Set<String> modifierNames(final DetailAST ast) {

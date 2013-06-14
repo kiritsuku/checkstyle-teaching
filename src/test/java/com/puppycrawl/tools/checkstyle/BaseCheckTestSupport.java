@@ -124,6 +124,11 @@ public abstract class BaseCheckTestSupport {
     return fileWithSuffix(suffix).getAbsolutePath();
   }
 
+  protected void test(final DefaultConfiguration config, final List<Err> errors) {
+    final String testClassName = new Exception().getStackTrace()[1].getMethodName();
+    testFile(config, fileWithSuffix(testClassName), errors);
+  }
+
   protected void test(final DefaultConfiguration config, final String fileNameSuffix, final List<Err> errors) {
     testFile(config, fileWithSuffix(fileNameSuffix), errors);
   }
