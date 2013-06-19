@@ -13,6 +13,12 @@ public class ExitUsageCheckTest extends BaseCheckTestSupport {
   private final DefaultConfiguration config = createCheckConfig(ExitUsageCheck.class);
 
   @Test
+  public void noErrorInCheckIfNoMethodsArePassed() {
+    config.addAttribute("checkedMethods", "");
+    test(config, "noErrorInMainMethod", NO_ERR);
+  }
+
+  @Test
   public void noErrorInMainMethod() throws Exception {
     config.addAttribute("checkedMethods", "main:System.exit");
     test(config, "noErrorInMainMethod", NO_ERR);

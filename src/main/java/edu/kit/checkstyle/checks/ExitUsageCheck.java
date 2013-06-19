@@ -2,6 +2,8 @@ package edu.kit.checkstyle.checks;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
@@ -42,14 +44,14 @@ public class ExitUsageCheck extends TokenSearcherCheck {
    *
    * "main:System.exit,System.out,System.in"
    *
-   * @param property the input string
+   * @param value the input string
    */
-  public void setCheckedMethods(final String property) {
+  public void setCheckedMethods(final String value) {
     final List<Prop> props = mkList();
-    for (final String p : property.split(",")) {
+    for (final String p : StringUtils.split(value, ",")) {
       final String[] parts = p.split("[:.]");
       if (parts.length != 2 && parts.length != 3) {
-        throw new IllegalArgumentException("format of property '" + property + "' is not supported");
+        throw new IllegalArgumentException("format of value '" + value + "' is not supported");
       }
 
       final boolean hasMethodScope = parts.length == 3;
