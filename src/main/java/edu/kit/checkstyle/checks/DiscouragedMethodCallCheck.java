@@ -12,11 +12,19 @@ import static edu.kit.checkstyle.CollectionUtils.*;
 
 
 /**
- * Checks if the 'System.exit' method is called outside of the main method.
+ * Checks for the existence of method calls and in which method they are called.
+ * <p>
+ * Some method calls are discouraged thus this rule checks if these methods are
+ * called and reports an error if this is the case.
+ * <p>
+ * It is possible to specify "free" methods. This means that all occurrences of
+ * given method calls will not lead to an error if they occur in such "free"
+ * methods. If no "free" methods are specified every found and specified method
+ * call leads to an error.
  *
  * @since JDK1.7, 07.06.2013
  */
-public class ExitUsageCheck extends TokenSearcherCheck {
+public class DiscouragedMethodCallCheck extends TokenSearcherCheck {
 
   static class Prop {
 
@@ -31,7 +39,6 @@ public class ExitUsageCheck extends TokenSearcherCheck {
     }
   }
 
-  private static final String msg = "The usage of 'System.exit' outside of the main method is discouraged";
   private List<Prop> props = mkList();
 
   /**
@@ -76,6 +83,11 @@ public class ExitUsageCheck extends TokenSearcherCheck {
 
     for (final Prop prop : props) {
       if (propFound(ast, prop) && !isInAllowedMethod(ast, prop)) {
+        final String context = prop.allowedMethod.isEmpty() ? "" :
+            String.format(" outside of the %s method", prop.allowedMethod);
+        final String msg = String.format(
+            "The usage of ''%s.%s''%s is discouraged",
+            prop.className, prop.methodName, context);
         log(line, column, msg);
       }
     }

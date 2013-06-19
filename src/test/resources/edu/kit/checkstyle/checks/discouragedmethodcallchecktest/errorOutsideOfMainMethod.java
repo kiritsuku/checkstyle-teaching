@@ -1,4 +1,4 @@
-package edu.kit.checkstyle.checks.exitusagechecktest;
+package edu.kit.checkstyle.checks.discouragedmethodcallchecktest;
 
 
 public class errorOutsideOfMainMethod {

@@ -8,8 +8,8 @@
   <module name="TreeWalker">
     <module name="InstanceofUsage"/>
     <module name="StaticUsage"/>
-    <module name="ExitUsageCheck">
-      <property name="checkedMethods" value="main:System.exit"/>
+    <module name="DiscouragedMethodCallCheck">
+      <property name="checkedMethods" value="main:System.exit,System.in,System.out,System.err"/>
     </module>
     <module name="MemberName">
       <property name="format" value="^m[a-zA-Z0-9]*$"/>
