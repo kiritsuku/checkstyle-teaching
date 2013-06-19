@@ -14,11 +14,13 @@ public class ExitUsageCheckTest extends BaseCheckTestSupport {
 
   @Test
   public void noErrorInMainMethod() throws Exception {
+    config.addAttribute("checkedMethods", "main:System.exit");
     test(config, "noErrorInMainMethod", NO_ERR);
   }
 
   @Test
   public void errorOutsideOfMainMethod() throws Exception {
+    config.addAttribute("checkedMethods", "main:System.exit");
     test(config, "errorOutsideOfMainMethod", Arrays.asList(errAt(7, 12)));
   }
 }

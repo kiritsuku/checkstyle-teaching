@@ -8,6 +8,9 @@
   <module name="TreeWalker">
     <module name="InstanceofUsage"/>
     <module name="StaticUsage"/>
+    <module name="ExitUsageCheck">
+      <property name="checkedMethods" value="main:System.exit"/>
+    </module>
     <module name="MemberName">
       <property name="format" value="^m[a-zA-Z0-9]*$"/>
       <message key="name.invalidPattern" value="Member ''{0}'' must start with a lowercase ''m'' (checked pattern ''{1}'')."/>
