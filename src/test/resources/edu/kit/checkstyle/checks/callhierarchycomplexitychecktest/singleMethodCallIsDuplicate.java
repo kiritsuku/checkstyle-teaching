@@ -1,11 +1,11 @@
 package edu.kit.checkstyle.checks.callhierarchycomplexitychecktest;
 
 
-public class singleMethodCallIsNoDuplicate {
+public class singleMethodCallIsDuplicate {
 
   void test() {
     int v1 = getValue();
-    int v2 = getValue(); // no duplicate
+    int v2 = getValue(); // duplicate
   }
   
   int getValue() {
