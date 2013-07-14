@@ -94,7 +94,10 @@ public class DiscouragedMethodCallCheck extends TokenSearcherCheck {
   }
 
   private boolean propFound(final DetailAST ast, final Prop prop) {
-    return eqName(ast, prop.methodName) && eqName(ast.getPreviousSibling(), prop.className);
+    return
+        eqName(ast, prop.methodName) &&
+        ast.getPreviousSibling() != null &&
+        eqName(ast.getPreviousSibling(), prop.className);
   }
 
   private boolean isInAllowedMethod(final DetailAST ast, final Prop prop) {
