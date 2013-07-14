@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -35,7 +36,7 @@ public class CallHierarchyComplexityCheck extends TokenSearcherCheck {
 
     @Override
     public int hashCode() {
-      return name.hashCode() + (isMethod() ? 1231 : 1237) * 31;
+      return Objects.hashCode(name, isMethod());
     }
 
     @Override
@@ -114,6 +115,58 @@ public class CallHierarchyComplexityCheck extends TokenSearcherCheck {
   private static final Ref THIS_REF = new VariableRef("this");
 
   private final SymbolTable symbolTable = new SymbolTable();
+
+  /**
+   ( METHOD_DEF[6x2] MODIFIERS[6x2] ( TYPE[6x2] void[6x2] ) test[6x7]
+   ([6x11] PARAMETERS[6x12] )[6x12] ( {[6x14] (
+   VARIABLE_DEF[7x4] MODIFIERS[7x4] (
+   TYPE[7x4] A[7x4] ) a[7x6] (
+     =[7x8] ( EXPR[7x14] (
+       ([7x14]
+       getA[7x10]
+       ELIST[7x15]
+       )[7x15] ) ) ) ) ;[7x16] (
+   VARIABLE_DEF[8x4] MODIFIERS[8x4] ( TYPE[8x4] int[8x4] ) v1[8x8] (
+     =[8x11] ( EXPR[8x43] (
+       ([8x43] (
+         .[8x33] (
+           ([8x31] (
+             .[8x26] (
+               ([8x24] (
+                 .[8x19] (
+                   ([8x17]
+                   getA[8x13]
+                   ELIST[8x18]
+                 )[8x18] )
+               getB[8x20] )
+             ELIST[8x25]
+             )[8x25] )
+           getC[8x27] )
+         ELIST[8x32]
+         )[8x32] )
+       getValue1[8x34] )
+     ELIST[8x44]
+     )[8x44] ) ) ) ) ;[8x45] (
+
+   VARIABLE_DEF[9x4] MODIFIERS[9x4] ( TYPE[9x4] int[9x4] ) v2[9x8] (
+     =[9x11] ( EXPR[9x38] (
+       ([9x38] (
+         .[9x28] (
+           ([9x26] (
+             .[9x21] (
+               ([9x19] (
+                 .[9x14]
+                 a[9x13]
+                 getB[9x15] )
+               ELIST[9x20]
+               )[9x20] )
+             getC[9x22] )
+           ELIST[9x27]
+           )[9x27] )
+         getValue2[9x29] )
+       ELIST[9x39]
+       )[9x39] ) ) ) ) ;[9x40] }[10x2] ) )
+   */
 
   @Override
   public void visitToken(final DetailAST ast) {
@@ -203,6 +256,15 @@ public class CallHierarchyComplexityCheck extends TokenSearcherCheck {
       nextMethodChain(dot, null);
     }
   }
+
+  /*
+
+   for (i = ...) {
+    if (arr[i].getA().getB().getC() == x) {
+      return arr[i].getA().getB().getC();
+    }
+   }
+   */
 
   /**
    * Helper function of {@link this#findMethodChain(DetailAST)}.
