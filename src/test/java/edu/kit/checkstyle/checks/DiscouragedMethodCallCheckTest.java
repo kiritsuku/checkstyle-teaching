@@ -15,13 +15,13 @@ public class DiscouragedMethodCallCheckTest extends BaseCheckTestSupport {
   @Test
   public void noErrorInCheckIfNoMethodsArePassed() {
     config.addAttribute("checkedMethods", "");
-    test(config, "noErrorInMainMethod", NO_ERR);
+    test(config, "noErrorInMainMethod", NO_REPORT);
   }
 
   @Test
   public void noErrorInMainMethod() throws Exception {
     config.addAttribute("checkedMethods", "main:System.exit");
-    test(config, NO_ERR);
+    test(config, NO_REPORT);
   }
 
   @Test
@@ -33,7 +33,7 @@ public class DiscouragedMethodCallCheckTest extends BaseCheckTestSupport {
   @Test
   public void noSystemOutExists() throws Exception {
     config.addAttribute("checkedMethods", "System.out");
-    test(config, NO_ERR);
+    test(config, NO_REPORT);
   }
 
   @Test

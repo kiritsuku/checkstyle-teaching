@@ -27,30 +27,43 @@ import com.puppycrawl.tools.checkstyle.api.Configuration;
 public abstract class BaseCheckTestSupport {
 
   /**
-   * Contains all necessary information for an error used by the test suite.
-   * Create an Err with the {@link arrAt} method.
+   * Contains all necessary information for an Checkstyle report used by the
+   * test suite. An instance of this class needs to be created with the
+   * {@link errAt} or {@link infoAt} methods.
    */
-  protected static class Err {
+  protected static class Report {
 
     public final int row;
     public final int column;
+    public final ReportType type;
+    public final String message;
 
     /** Create an Err with the {@link arrAt} method. */
-    private Err(final int row, final int column) {
+    private Report(final int row, final int column, final ReportType type, final String message) {
       this.row = row;
       this.column = column;
+      this.type = type;
+      this.message = message;
     }
 
     @Override
     public String toString() {
-      return Objects.toStringHelper(this).addValue(row).addValue(column).toString();
+      return Objects.toStringHelper(this).addValue(row).addValue(column).addValue(type).toString();
     }
   }
 
-  protected static final List<Err> NO_ERR = Lists.newArrayList();
+  protected enum ReportType {
+    Err, Info
+  }
 
-  protected Err errAt(final int row, final int column) {
-    return new Err(row, column);
+  protected static final List<Report> NO_REPORT = Lists.newArrayList();
+
+  protected Report errAt(final int row, final int column) {
+    return new Report(row, column, ReportType.Err, "");
+  }
+
+  protected Report metricAt(final int row, final int column, final String message) {
+    return new Report(row, column, ReportType.Info, "metric:"+message);
   }
 
   /** a brief logger that only display info about errors */
@@ -124,16 +137,16 @@ public abstract class BaseCheckTestSupport {
     return fileWithSuffix(suffix).getAbsolutePath();
   }
 
-  protected void test(final DefaultConfiguration config, final List<Err> errors) {
+  protected void test(final DefaultConfiguration config, final List<Report> reports) {
     final String testClassName = new Exception().getStackTrace()[1].getMethodName();
-    testFile(config, fileWithSuffix(testClassName), errors);
+    testFile(config, fileWithSuffix(testClassName), reports);
   }
 
-  protected void test(final DefaultConfiguration config, final String fileNameSuffix, final List<Err> errors) {
-    testFile(config, fileWithSuffix(fileNameSuffix), errors);
+  protected void test(final DefaultConfiguration config, final String fileNameSuffix, final List<Report> reports) {
+    testFile(config, fileWithSuffix(fileNameSuffix), reports);
   }
 
-  protected void testFile(final DefaultConfiguration config, final File path, final List<Err> errors) {
+  protected void testFile(final DefaultConfiguration config, final File path, final List<Report> reports) {
     try {
       final Checker c = createChecker(config);
       c.process(Arrays.asList(path));
@@ -144,19 +157,19 @@ public abstract class BaseCheckTestSupport {
                   new ByteArrayInputStream(
                       mBAOS.toByteArray())))) {
 
-        for (int i = 0, size = errors.size(); i < size; ++i) {
+        for (int i = 0, size = reports.size(); i < size; ++i) {
           final String msg = lnr.readLine();
-          final Err err = errors.get(i);
-          final String regex = ".*:" + err.row + ":" + err.column + ":.*";
+          final Report r = reports.get(i);
+          final String regex = ".*:" + r.row + ":" + r.column + ": " + (!r.message.isEmpty() ? r.message : ".*");
 
           if (msg == null || !msg.matches(regex)) {
-            throw new ComparisonFailure("Error message didn't match the expected regex,", regex, msg);
+            throw new ComparisonFailure("Reported message didn't match the expected regex,", regex, msg);
           }
         }
 
         final String msg = lnr.readLine();
         if (msg != null) {
-          throw new AssertionError("Error message retrieved but nothing expected. Message: " + msg);
+          throw new AssertionError("Message retrieved but nothing expected. Message: " + msg);
         }
 
       }

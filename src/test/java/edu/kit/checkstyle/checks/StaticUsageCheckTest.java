@@ -14,12 +14,12 @@ public class StaticUsageCheckTest extends BaseCheckTestSupport {
 
   @Test
   public void noStaticExists() throws Exception {
-    test(config, "noStaticExists", NO_ERR);
+    test(config, "noStaticExists", NO_REPORT);
   }
 
   @Test
   public void publicStaticFinalValue() throws Exception {
-    test(config, "publicStaticFinalValue", NO_ERR);
+    test(config, "publicStaticFinalValue", NO_REPORT);
   }
 
   @Test
@@ -29,16 +29,16 @@ public class StaticUsageCheckTest extends BaseCheckTestSupport {
 
   @Test
   public void staticImportIsNoError() throws Exception {
-    test(config, "staticImportIsNoError", NO_ERR);
+    test(config, "staticImportIsNoError", NO_REPORT);
   }
 
   @Test
   public void singletonIsNoError() throws Exception {
-    test(config, "singletonIsNoError", NO_ERR);
+    test(config, "singletonIsNoError", NO_REPORT);
   }
 
   @Test
   public void helperFunctionIsNoError() throws Exception {
-    test(config, "helperFunctionIsNoError", NO_ERR);
+    test(config, "helperFunctionIsNoError", NO_REPORT);
   }
 }

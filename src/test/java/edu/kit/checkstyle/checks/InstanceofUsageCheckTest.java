@@ -14,12 +14,12 @@ public class InstanceofUsageCheckTest extends BaseCheckTestSupport {
 
   @Test
   public void noInstanceofExists() throws Exception {
-    test(config, "noInstanceofExists", NO_ERR);
+    test(config, "noInstanceofExists", NO_REPORT);
   }
 
   @Test
   public void instanceofExists() throws Exception {
-    test(config, "instanceofExists", NO_ERR);
+    test(config, "instanceofExists", NO_REPORT);
   }
 
   @Test
@@ -32,6 +32,6 @@ public class InstanceofUsageCheckTest extends BaseCheckTestSupport {
 
   @Test
   public void nestedInstanceofExists() throws Exception {
-    test(config, "nestedInstanceofExists", NO_ERR);
+    test(config, "nestedInstanceofExists", NO_REPORT);
   }
 }

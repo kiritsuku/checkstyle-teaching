@@ -6,7 +6,9 @@
 
 <checkstyle-packages>
   <package name="edu.kit.checkstyle">
-    <package name="checks"/>
+    <package name="checks">
+      <package name="metrics"/>
+    </package>
     <package name="listeners"/>
   </package>
   <!--package name="com.puppycrawl.tools.checkstyle">
