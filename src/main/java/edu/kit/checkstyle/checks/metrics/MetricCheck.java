@@ -35,4 +35,26 @@ public abstract class MetricCheck extends Check {
    */
   protected abstract String metric();
 
+  /**
+   * Counts the number of token of a specific type that are children of another
+   * token.
+   *
+   * @param ast
+   *        the token that is searched
+   * @param type
+   *        the token type to search for
+   * @return the number of tokens found
+   */
+  protected int countTokenType(final DetailAST ast, final int type) {
+    int counter = 0;
+    DetailAST cur = ast.findFirstToken(type);
+    while (cur != null) {
+      if (cur.getType() == type) {
+        counter += 1;
+      }
+      cur = cur.getNextSibling();
+    }
+    return counter;
+  }
+
 }

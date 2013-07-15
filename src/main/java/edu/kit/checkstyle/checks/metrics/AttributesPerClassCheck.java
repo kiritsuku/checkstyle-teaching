@@ -4,6 +4,11 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 
+/**
+ * Counts the number of attributes in a class.
+ *
+ * @since JDK1.7, Jul 14, 2013
+ */
 public class AttributesPerClassCheck extends MetricCheck {
 
   public static final String METRIC = "attributes-per-class";
@@ -49,16 +54,9 @@ public class AttributesPerClassCheck extends MetricCheck {
 
   @Override
   public void visitToken(final DetailAST ast) {
-    int counter = 0;
     final DetailAST body = ast.findFirstToken(TokenTypes.OBJBLOCK);
-    DetailAST cur = body.findFirstToken(TokenTypes.VARIABLE_DEF);
-    while (cur != null) {
-      if (cur.getType() == TokenTypes.VARIABLE_DEF) {
-        counter += 1;
-      }
-      cur = cur.getNextSibling();
-    }
-    logMetric(ast, counter);
+    final int count = countTokenType(body, TokenTypes.VARIABLE_DEF);
+    logMetric(ast, count);
   }
 
 }
