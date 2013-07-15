@@ -19,6 +19,8 @@
     
     <!-- metrics -->
     <module name="AttributesPerClass"/>
+    <module name="MethodsPerClass"/>
+    <module name="NumberOfClasses"/>
   </module>
 
   <module name="MetricListener">
