@@ -5,7 +5,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 
 /**
- * Counts the number of attributes in a class.
+ * Counts the number of attributes in a class or in an enum.
  *
  * @since JDK1.7, Jul 14, 2013
  */
@@ -15,7 +15,7 @@ public class AttributesPerClassCheck extends MetricCheck {
 
   @Override
   public int[] getDefaultTokens() {
-    return new int[] { TokenTypes.CLASS_DEF };
+    return new int[] { TokenTypes.CLASS_DEF, TokenTypes.ENUM_DEF };
   }
 
   @Override

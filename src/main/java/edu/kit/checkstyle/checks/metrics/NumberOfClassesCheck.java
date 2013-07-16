@@ -6,8 +6,8 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 
 /**
- * Returns a 1 for every occurrence of a class or an interface. The number of
- * ones needs to be caught afterwards by an {@link AuditListener}.
+ * Returns a 1 for every occurrence of a class, an interface or an enum. The
+ * number of ones needs to be caught afterwards by an {@link AuditListener}.
  *
  * @since JDK1.7, Jul 15, 2013
  */
@@ -18,7 +18,7 @@ public class NumberOfClassesCheck extends MetricCheck {
   @Override
   public int[] getDefaultTokens() {
     return new int[] {
-        TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF
+        TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF, TokenTypes.ENUM
     };
   }
 
