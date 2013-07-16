@@ -21,6 +21,7 @@
     <module name="AttributesPerClass"/>
     <module name="MethodsPerClass"/>
     <module name="NumberOfClasses"/>
+    <module name="NumberOfStatementsPerMethod"/>
   </module>
 
   <module name="MetricListener">
