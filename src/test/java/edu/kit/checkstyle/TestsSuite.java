@@ -9,6 +9,7 @@ import edu.kit.checkstyle.checks.DiscouragedMethodCallCheckTest;
 import edu.kit.checkstyle.checks.InstanceofUsageCheckTest;
 import edu.kit.checkstyle.checks.StaticUsageCheckTest;
 import edu.kit.checkstyle.checks.metrics.AttributesPerClassCheckTest;
+import edu.kit.checkstyle.checks.metrics.MaxNestedBlockDepthCheckTest;
 import edu.kit.checkstyle.checks.metrics.MethodsPerClassCheckTest;
 import edu.kit.checkstyle.checks.metrics.NumberOfClassesCheckTest;
 import edu.kit.checkstyle.checks.metrics.NumberOfStatementsPerMethodCheckTest;
@@ -22,7 +23,8 @@ import edu.kit.checkstyle.checks.metrics.NumberOfStatementsPerMethodCheckTest;
   AttributesPerClassCheckTest.class,
   MethodsPerClassCheckTest.class,
   NumberOfClassesCheckTest.class,
-  NumberOfStatementsPerMethodCheckTest.class
+  NumberOfStatementsPerMethodCheckTest.class,
+  MaxNestedBlockDepthCheckTest.class
 })
 public class TestsSuite {
 
