@@ -19,6 +19,26 @@ public abstract class MetricCheck extends Check {
   }
 
   /**
+   * Overridden to catch exceptions on which it is not ease to react on
+   * afterwards because Checkstyle just prints them out to stdout.
+   *
+   * Implement {@link this#execute(DetailAST)} to visit a token.
+   */
+  @Override
+  public final void visitToken(final DetailAST ast) {
+    try {
+      execute(ast);
+    } catch (final Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Needs to be implemented instead of {@link Check#visitToken(DetailAST)}.
+   */
+  protected abstract void execute(DetailAST ast);
+
+  /**
    * Logs a metric message.
    *
    * @param ast

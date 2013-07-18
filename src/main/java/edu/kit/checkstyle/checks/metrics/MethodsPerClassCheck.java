@@ -24,7 +24,7 @@ public class MethodsPerClassCheck extends MetricCheck {
   }
 
   @Override
-  public void visitToken(final DetailAST ast) {
+  protected void execute(final DetailAST ast) {
     final DetailAST body = ast.findFirstToken(TokenTypes.OBJBLOCK);
     final int count = countTokenType(body, TokenTypes.METHOD_DEF);
     logMetric(ast, count);

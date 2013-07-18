@@ -28,7 +28,8 @@ public class NumberOfClassesCheck extends MetricCheck {
   };
 
   @Override
-  public void visitToken(final DetailAST ast) {
+  protected void execute(final DetailAST ast) {
     logMetric(ast, 1);
   }
+
 }

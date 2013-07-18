@@ -53,7 +53,7 @@ public class AttributesPerClassCheck extends MetricCheck {
    */
 
   @Override
-  public void visitToken(final DetailAST ast) {
+  protected void execute(final DetailAST ast) {
     final DetailAST body = ast.findFirstToken(TokenTypes.OBJBLOCK);
     final int count = countTokenType(body, TokenTypes.VARIABLE_DEF);
     logMetric(ast, count);

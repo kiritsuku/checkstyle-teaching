@@ -29,13 +29,9 @@ public class NumberOfStatementsPerMethodCheck extends MetricCheck {
   }
 
   @Override
-  public void visitToken(final DetailAST ast) {
-    try {
+  protected void execute(final DetailAST ast) {
     final DetailAST body = ast.findFirstToken(TokenTypes.SLIST);
     logMetric(ast, countOfAST(body));
-    } catch (final Exception e) {
-      e.printStackTrace();
-    }
   }
 
   private int countOfAST(final DetailAST ast) {
