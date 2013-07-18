@@ -31,7 +31,9 @@ public class MaxNestedBlockDepthCheck extends MetricCheck {
   @Override
   protected void execute(final DetailAST ast) {
     final DetailAST body = ast.findFirstToken(TokenTypes.SLIST);
-    logMetric(ast, maxDepthOfAST(body, 0));
+    if (body != null) {
+      logMetric(ast, maxDepthOfAST(body, 0));
+    }
   }
 
   private int maxDepthOfAST(final DetailAST ast, final int depth) {

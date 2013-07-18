@@ -31,7 +31,9 @@ public class NumberOfStatementsPerMethodCheck extends MetricCheck {
   @Override
   protected void execute(final DetailAST ast) {
     final DetailAST body = ast.findFirstToken(TokenTypes.SLIST);
-    logMetric(ast, countOfAST(body));
+    if (body != null) {
+      logMetric(ast, countOfAST(body));
+    }
   }
 
   private int countOfAST(final DetailAST ast) {

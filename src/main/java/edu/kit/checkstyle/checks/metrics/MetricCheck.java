@@ -29,6 +29,7 @@ public abstract class MetricCheck extends Check {
     try {
       execute(ast);
     } catch (final Exception e) {
+      System.err.println("Error in AST '" + ast + "' in file '" + getFileContents().getFilename() + "'");
       e.printStackTrace();
     }
   }
