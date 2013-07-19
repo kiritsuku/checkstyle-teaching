@@ -23,6 +23,7 @@
     <module name="NumberOfClasses"/>
     <module name="NumberOfStatementsPerMethod"/>
     <module name="MaxNestedBlockDepth"/>
+    <module name="NumberOfArguments"/>
   </module>
 
   <module name="MetricListener">

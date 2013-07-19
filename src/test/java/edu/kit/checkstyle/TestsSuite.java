@@ -11,6 +11,7 @@ import edu.kit.checkstyle.checks.StaticUsageCheckTest;
 import edu.kit.checkstyle.checks.metrics.AttributesPerClassCheckTest;
 import edu.kit.checkstyle.checks.metrics.MaxNestedBlockDepthCheckTest;
 import edu.kit.checkstyle.checks.metrics.MethodsPerClassCheckTest;
+import edu.kit.checkstyle.checks.metrics.NumberOfArgumentsCheckTest;
 import edu.kit.checkstyle.checks.metrics.NumberOfClassesCheckTest;
 import edu.kit.checkstyle.checks.metrics.NumberOfStatementsPerMethodCheckTest;
 
@@ -24,7 +25,8 @@ import edu.kit.checkstyle.checks.metrics.NumberOfStatementsPerMethodCheckTest;
   MethodsPerClassCheckTest.class,
   NumberOfClassesCheckTest.class,
   NumberOfStatementsPerMethodCheckTest.class,
-  MaxNestedBlockDepthCheckTest.class
+  MaxNestedBlockDepthCheckTest.class,
+  NumberOfArgumentsCheckTest.class,
 })
 public class TestsSuite {
 
