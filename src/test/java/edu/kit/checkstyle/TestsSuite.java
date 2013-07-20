@@ -13,6 +13,7 @@ import edu.kit.checkstyle.checks.metrics.MaxNestedBlockDepthCheckTest;
 import edu.kit.checkstyle.checks.metrics.MethodsPerClassCheckTest;
 import edu.kit.checkstyle.checks.metrics.NumberOfArgumentsCheckTest;
 import edu.kit.checkstyle.checks.metrics.NumberOfClassesCheckTest;
+import edu.kit.checkstyle.checks.metrics.NumberOfMethodsPerClassCheckTest;
 import edu.kit.checkstyle.checks.metrics.NumberOfStatementsPerMethodCheckTest;
 
 @RunWith(Suite.class)
@@ -27,6 +28,7 @@ import edu.kit.checkstyle.checks.metrics.NumberOfStatementsPerMethodCheckTest;
   NumberOfStatementsPerMethodCheckTest.class,
   MaxNestedBlockDepthCheckTest.class,
   NumberOfArgumentsCheckTest.class,
+  NumberOfMethodsPerClassCheckTest.class,
 })
 public class TestsSuite {
 
