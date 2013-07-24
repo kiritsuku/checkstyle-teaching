@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
@@ -47,9 +48,9 @@ public class MetricListener extends AutomaticBean implements AuditListener {
 
   @Override
   public void auditFinished(final AuditEvent e) {
-    for (final String row : metrics.rowKeySet()) {
-      for (final String column : metrics.columnKeySet()) {
-        writer.println(row + ":" + column + ":" + metrics.get(row, column));
+    for (final Map.Entry<String,Map<String,List<Integer>>> row : metrics.rowMap().entrySet()) {
+      for (final Map.Entry<String,List<Integer>> column : row.getValue().entrySet()) {
+        writer.println(row.getKey() + ":" + column.getKey() + ":" + column.getValue());
       }
     }
     writer.flush();
