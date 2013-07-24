@@ -57,3 +57,17 @@ to support students in learning Java.
 - [Use Modifications with Maven](http://maven.apache.org/plugins/maven-checkstyle-plugin/examples/custom-developed-checkstyle.html)
 
 - [Checkstyle Source repository](http://checkstyle.hg.sourceforge.net/hgweb/checkstyle/checkstyle/)
+
+###########################
+
+len = len of chains
+count = number of chains
+
+methodChainComplexity = sum(len*count)
+
+##############################
+
+metrics:
+
+- comment/source code relation
+- number of packages
